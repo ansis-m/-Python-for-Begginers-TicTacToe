@@ -40,24 +40,57 @@ def draw(chars):
     X, O = count_chars(chars)
     return True if X + O == 9 else False
 
-
-def main():
-
-    chars = input()
+def show_field(chars):
     print("---------")
     print("| {} {} {} |".format(chars[0], chars[1], chars[2]))
     print("| {} {} {} |".format(chars[3], chars[4], chars[5]))
     print("| {} {} {} |".format(chars[6], chars[7], chars[8]))
     print("---------")
 
-    if impossible(chars):
-        print("Impossible")
-    elif win(chars) == 'X' or win(chars) == 'O':
-        print("{} wins".format(win(chars)))
-    elif draw(chars):
-        print("Draw")
-    else:
-        print("Game not finished")
+def swap_underline(chars):
+       chars = [ch if ch != '_' else " " for ch in chars]
+       return chars
+
+
+def main():
+
+    chars = input()
+    chars = swap_underline(chars)
+    show_field(chars)
+
+    while True:
+        move = input()
+        digits = move.split()
+        if len(digits) != 2:
+            print("Bad input. Two digits!!!")
+            continue
+        try:
+            x = int(digits[0])
+            y = int(digits[1])
+        except:
+            print("You should enter numbers!")
+        else:
+            if x > 3 or y > 3 or x < 1 or y < 1:
+                print("Coordinates should be from 1 to 3!")
+                continue
+            elif chars[(x - 1) * 3 + y - 1] != ' ':
+                print("This cell is occupied! Choose another one!")
+                continue
+            else:
+                chars[(x - 1) * 3 + y - 1] = 'X'
+                break
+
+    show_field(chars)
+
+
+    # if impossible(chars):
+    #     print("Impossible")
+    # elif win(chars) == 'X' or win(chars) == 'O':
+    #     print("{} wins".format(win(chars)))
+    # elif draw(chars):
+    #     print("Draw")
+    # else:
+    #     print("Game not finished")
 
 if __name__ == "__main__":
     main()
